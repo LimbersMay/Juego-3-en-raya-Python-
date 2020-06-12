@@ -1,0 +1,158 @@
+
+# Aqui recibirá como parametro y la matriz misma para rellenarlo dentro de la lista y formar la matriz
+def Form_matriz(Rango, Simbolo_matriz, Matriz1, Contador, Fila_juego, Columna_juego, Sim_jugador1, Sim_jugador2, Turno):
+
+    # Se le sumaran listas vacias dentro de la lista para que luego sean rellenadas y retornará la lista
+    if Contador <= 1:
+        for n in range(Rango):
+            n = n + 0
+
+            Matriz_suma = [[]]
+            Matriz1.extend(Matriz_suma)
+
+        # Construimos la lista del simbolo que da el usuario
+        for i in range(Rango):
+            for x in range(Rango):
+
+                x = x
+                Matriz1[i].append(Simbolo_matriz)
+
+    # Aplicamos un contador para evitar que en la primera jugada nos pinte los simbolos del primer y segundo jugador
+    if Contador > 1:
+
+        # Ahora evaluamos, si es el turno 1, la fila y el rango dentro de la lista seran sustituidos por el simbolo que eligió el jugador
+        if Turno == 1:
+
+            Matriz1[Columna_juego][Fila_juego] = Simbolo_jugador1 # Para dibujar el simbolo que eligió el primer jugador
+        
+        elif Turno == 2:
+            Matriz1[Columna_juego][Fila_juego] = Simbolo_jugador2 # Para dibujar el simbolo que eligió el segundo jugador
+
+    # Imprimimos la Matriz con un ciclo
+    for columna in range(Rango):
+        for fila in range(Rango):
+            print(Matriz1[columna][fila], "", "", end="")
+        print()
+
+    # Algoritmo para determinar la persona ganadora
+
+
+    return ""
+
+def Ganador(Tablero, Simbolo_jugador1, Simbolo_jugador2):
+
+    # Formas que existen de ganar:
+    #Para la manera de ganar 1, todos los signos de una lista entera deben ser iguales [["-", "-", "-"], ["+", "-", "+"]], son iguales en la primera lista, asi que gana el jugador que haya escogido ese simbolo.
+
+    #Las siguientes maneras de ganar son que todas las posiciones 0 del tablero sean iguales [["-", "+"], ["-", "-"]] en la primera lista la posicion es "-" y en la segunda, la posición 0 también es "-", asi que gana el jugador, y asi sucesivamente con la posicion 1, 2, 3, dependiendo de la longitud de la lista, recomiendo interpretar la matriz en una hoja blanca, si sabes el uso de matrices, no será tan complicado comprender el funcionamiento.
+
+    # Aqui como expliqué anteriormente se irán sumando cuantos "-", hubieron en todas las posiciones 0, 1, 2, 3, dependiendo de la longitud, pero si la matriz es de longitud 4x4, entonces para ganar debes tener "-" en todas las posiciones 0 o 2 o 3, etc. 
+    Lista_puntos_Jugador1 = []
+    Lista_puntos_Jugador2 = []
+
+    #Aqui se acomularán cuantos simbolos de un jugador hubo en la posición 1, cuando termien el ciclo lo guardará en su respectiva lista
+    Puntos_jugador1 = 0
+    Puntos_jugador2 = 0
+
+    Contador_turnos = 0
+
+    for contador_principal in range(len(Tablero)):
+
+        for Rango_lista in range(len(Tablero)):
+
+            # Le sumanos 0 porque realmente este ciclo no nos sirve de mucho, solo nos sirve para que al romperse, nos regrese al ciclo principal.
+            Rango_lista = Rango_lista + 0
+
+            for Index in range(len(Tablero)): # Aqui repetiremos este ciclo de acuerdo a cuantos elementos hay en el tablero
+
+                # Esta condicional es para determinar si la posicion 0, y a su vez la posición 0 de esta es el simbolo del jugador 1, ejemplo
+                # [["-", "-"], ["+", "-"]] Aqui podemos observar que la primera lista es la posicion 0, y a su vez la posicion 0 de esta lista es el simbolo "-", entonces la condicion se cumplirá y se repetira el ciclo.
+
+                # Pero en la posicion 1 de la lista, la posición no es igual a "-", es igual a "+", entonces se le sumara un punto al jugador 2 en la segunda condicional.
+
+                # El index nos servirá para ir recorriendo la lista, al principio index vale 0, entonces busca la posición 0 de la lista y a su vez busca el 0 que es el valor de contador principal, si es "-" o "+", si no es ninguno se reiniciará el ciclo, y esta vez indez va valer 1, entonces va buscar en la lista, la posicion 1, y a su vez buscará la posición 0 que es lo que vale el contador principal y volverá a evaluar nuavemente, así suceviamente.
+
+                if Tablero[Index][contador_principal] == Simbolo_jugador1:
+                    Puntos_jugador1 += 1
+                    Contador_turnos += 1
+                
+                elif Tablero[Index][contador_principal] == Simbolo_jugador2:
+                    Puntos_jugador2 += 1
+                    Contador_turnos += 1
+                
+                else:
+                    Contador_turnos += 1
+
+            # Cuando termine de evaluar todos los 0, de todas las listas, entonces agregarémos cuantos "-" tuvo el jugador 1 en la posicion 0 y cuantos "+" tuvo el jugador 2 en la posición 0 y los agregará a sus respectivas listas y el valor de estos se reiniciará y harémos un breake para salir de este ciclo y que el valor de contador_principal se incremente
+            if Contador_turnos == len(Tablero):
+                Lista_puntos_Jugador1.append(Puntos_jugador1)
+                Lista_puntos_Jugador2.append(Puntos_jugador2)
+
+                Puntos_jugador1 = 0
+                Puntos_jugador2 = 0
+                Contador_turnos = 0
+
+                break
+            
+
+    # Este for nos ayudará a determinar, como mencioné, una forma de ganar es tener toda la lista completa del simbolo de un jugador, así que tomaremos la lista y la recorreremos, si dentro de la lista, el simbolo del jugador es igual al numero de elementos qu hay, osease si hay 5 elementos en la lista y los 5 elementos son de un jugador, ese jugador habrá ganado
+    for x in Tablero:
+        if x.count(Simbolo_jugador1) == len(Tablero):
+            Lista_puntos_Jugador1.insert(0, 1)
+            break
+        
+        elif x.count(Simbolo_jugador2) == len(Tablero):
+            Lista_puntos_Jugador2.insert(0, 1)
+            break
+
+        else:
+            Lista_puntos_Jugador1.insert(0, 0)
+            Lista_puntos_Jugador2.insert(0, 0)
+            break
+
+
+    #print("Puntos del jugador 1", Lista_puntos_Jugador1)
+    #print("Puntos del jugador 2", Lista_puntos_Jugador2)
+
+    #print("\n")
+
+    if max(Lista_puntos_Jugador1) == len(Tablero) or Lista_puntos_Jugador1[0] == 1:
+        return f"--El jugador 1 ha hecho un {len(Tablero)} en raya--"
+
+    elif max(Lista_puntos_Jugador2) == len(Tablero) or Lista_puntos_Jugador2[0] == 1:
+        return f"--El jugador 2 ha hecho un {len(Tablero)} en raya--"
+
+    else:
+        return " "
+
+# Crearemos la matriz y el contador que posteriormente le pasaremos como parametro
+
+Contador = 1
+Matriz1 = []
+
+Rango_matriz = int(input("Dame el rango de la matriz que deseas hacer: "))
+Simbolo_matriz = str(input("Que simbolo quieres que tenga la matriz: "))
+
+Simbolo_jugador1 = str(input("Dame el simbolo del jugador 1: "))
+Simbolo_jugador2 = str(input("Dame el simbolo del jugador 2: "))
+
+print(Form_matriz(Rango_matriz, Simbolo_matriz, Matriz1, Contador, 0, 0, Simbolo_jugador1, Simbolo_jugador2, 0))
+
+# La condición del ciclo, es que mientras la funcion nos siga retornando " ", que es lo que nos retorna cuando ningun jugador ha ganado, pues se siga repitiendo
+while Ganador(Matriz1, Simbolo_jugador1, Simbolo_jugador2) == " ":
+
+    Columna_juego = int(input("Introduce la colunma: "))
+    Fila_juego = int(input("Introduce la fila de juego: "))
+
+    Turno_jugador = int(input("Es turno del jugador: "))
+
+    Contador += 1
+
+    try:
+        print(Form_matriz(Rango_matriz, Simbolo_matriz, Matriz1, Contador, Fila_juego, Columna_juego, Simbolo_jugador1, Simbolo_jugador2, Turno_jugador))
+
+        print(Ganador(Matriz1, Simbolo_jugador1, Simbolo_jugador2))
+    
+    except:
+        print("\nLa columna o fila que pusiste sobrepasa el rango, por favor introduce una válida \n")
+    
