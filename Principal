@@ -93,6 +93,44 @@ def Ganador(Tablero, Simbolo_jugador1, Simbolo_jugador2):
                 Contador_turnos = 0
 
                 break
+    
+
+    # Aqui haremos un recorrido para determinar si hizo un tres en raya en forma diagonal    
+    Contador_diagonal =  0
+    for diagonal in range(len(Tablero)):
+        if Tablero[Contador_diagonal][diagonal] == Simbolo_jugador1:
+
+            Puntos_jugador1 += 1
+            Contador_diagonal += 1
+        
+        elif Tablero[Contador_diagonal][diagonal] == Simbolo_jugador2:
+            Puntos_jugador2 += 1
+            Contador_diagonal += 1
+        
+        else:
+            Contador_diagonal += 1
+    Lista_puntos_Jugador1.append(Puntos_jugador1)
+    Lista_puntos_Jugador2.append(Puntos_jugador2)
+    
+    Puntos_jugador1 = 0
+    Puntos_jugador2 = 0
+
+    Contador_derecha = 0
+    for diagonal_derecha in range(len(Tablero) - 1, -1, -1):
+        if Tablero[Contador_derecha][diagonal_derecha] == Simbolo_jugador1:
+
+            Puntos_jugador1 += 1
+            Contador_derecha += 1
+        
+        elif Tablero[Contador_derecha][diagonal_derecha] == Simbolo_jugador2:
+            Puntos_jugador2 += 1
+            Contador_derecha += 1
+        
+        else:
+            Contador_derecha += 1
+    Lista_puntos_Jugador1.append(Puntos_jugador1)
+    Lista_puntos_Jugador2.append(Puntos_jugador2)
+
             
 
     # Este for nos ayudará a determinar, como mencioné, una forma de ganar es tener toda la lista completa del simbolo de un jugador, así que tomaremos la lista y la recorreremos, si dentro de la lista, el simbolo del jugador es igual al numero de elementos qu hay, osease si hay 5 elementos en la lista y los 5 elementos son de un jugador, ese jugador habrá ganado
@@ -155,4 +193,3 @@ while Ganador(Matriz1, Simbolo_jugador1, Simbolo_jugador2) == " ":
     
     except:
         print("\nLa columna o fila que pusiste sobrepasa el rango, por favor introduce una válida \n")
-    
